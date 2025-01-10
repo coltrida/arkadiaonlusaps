@@ -9,7 +9,7 @@ class UserController extends Controller
 {
     public function listaOperatori(UserService $userService)
     {
-        return view('pages.prova', [
+        return view('pages.user.listaOperatori', [
             'title' => 'Lista Operatori',
             'listaOperatori' => $userService->listaOperatori()
         ]);

@@ -14,7 +14,7 @@ class UserService
 
     public function listaOperatori()
     {
-        return User::where('role', '<>', 1)->orderBy('name')->get();
+        return User::where('role', '<>', 1)->latest()->get();
     }
 
     public function eliminaUser($idUser)
@@ -33,14 +33,7 @@ class UserService
 
     public function inserisciUser($request)
     {
-        User::create([
-            'name' => $request->name,
-            'role' => 0,
-            'email' => $request->email,
-            'oresettimanali' => $request->oresettimanali,
-            'oresaldo' => 0,
-            'password' => Hash::make($request->password)
-        ]);
+        return User::create($request->all());
     }
 
     public function associaOperatoreOresettimanali($request)

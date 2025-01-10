@@ -3,8 +3,14 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [\App\Http\Controllers\FrontController::class, 'index']);
-Route::get('/listaOperatori', [\App\Http\Controllers\UserController::class, 'listaOperatori'])->name('user.listaOperatori');
+Route::get('/', [\App\Http\Controllers\FrontController::class, 'index'])->name('inizio');
+
+Route::middleware(['auth'])->group(function () {
+    //-------------------------- USER -------------------------------//
+    Route::get('/listaOperatori', [\App\Http\Controllers\UserController::class, 'listaOperatori'])->name('user.listaOperatori');
+});
+
+
 
 
 

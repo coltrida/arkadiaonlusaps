@@ -1,11 +1,8 @@
 <x-layouts.stile>
-    <x-slot:title>
-        {{$title}}
-    </x-slot:title>
+    <x-slot:title>{{$title}}</x-slot:title>
 
-    <h2>{{$title}}</h2>
-
-    <x-users.user-list :listaOperatori="$listaOperatori"></x-users.user-list>
-
+    <div>
+        <livewire:user.elenco :listaOperatori="$listaOperatori"/>
+    </div>
 
 </x-layouts.stile>
