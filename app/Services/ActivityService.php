@@ -6,6 +6,8 @@ use App\Models\Activity;
 use App\Models\Associa;
 use App\Models\AttivitaCliente;
 use Carbon\Carbon;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
 
 class ActivityService
 {
@@ -14,18 +16,68 @@ class ActivityService
         return Activity::orderBy('name')->get();
     }
 
-    public function listaAttivitaPaginate()
+    public function listaAttivitaPaginate($testo)
     {
-        return Activity::latest()->paginate(5);
+        return Activity::where('name', 'like', '%'.$testo.'%')->latest()->paginate(5);
     }
 
     public function inserisci($request)
     {
-        Activity::create([
-            'name' => $request->name,
-            'tipo' => $request->tipo,
-            'cost' => $request->cost,
-        ]);
+        try {
+            Activity::create($request->all());
+            return ['Attività Inserita Correttamente!', 'success'];
+        } catch (QueryException $e) {
+            // Errore specifico legato al database
+            if ($e->getCode() == 23000) { // Violazione dei vincoli (es. unique)
+                if (!$request->name){
+                    return ['Nome Obbligatorio - inserimento non effettuato', 'error'];
+                }elseif (!$request->tipo){
+                    return ['Tipo Obbligatorio - inserimento non effettuato', 'error'];
+                }elseif (!$request->cost){
+                    return ['Costo Obbligatorio - inserimento non effettuato', 'error'];
+                }
+                return ['Attività già presente - inserimento non effettuato', 'error'];
+            }
+            return [$e->getMessage(), 'error'];
+        } catch (\Exception $e) {
+            // Errore generico
+            return [$e->getMessage(), 'error'];
+        }
+    }
+
+    public function modifica($activity, Request $request)
+    {
+        try {
+            $activity->name = $request->name;
+            $activity->tipo = $request->tipo;
+            $activity->cost = $request->cost;
+            $activity->save();
+            return ['Attività Modificata Correttamente!', 'success'];
+        } catch (QueryException $e) {
+            // Errore specifico legato al database
+            if ($e->getCode() == 23000) { // Violazione dei vincoli (es. unique)
+                if (!$request->name){
+                    return ['Nome Obbligatorio - inserimento non effettuato', 'error'];
+                }elseif (!$request->tipo){
+                    return ['Tipo Obbligatorio - inserimento non effettuato', 'error'];
+                }elseif (!$request->cost){
+                    return ['Costo Obbligatorio - inserimento non effettuato', 'error'];
+                }
+                return ['Attività già presente - inserimento non effettuato', 'error'];
+            }
+            return [$e->getMessage(), 'error'];
+        } catch (\Exception $e) {
+            // Errore generico
+            return [$e->getMessage(), 'error'];
+        }
+    }
+
+    public function elimina($id)
+    {
+        $client = Activity::find($id);
+        $client->name = $client->name.' - cancellato';
+        $client->save();
+        $client->delete();
     }
 
     public function inserisciAssociazioneAttivitaClient($request)

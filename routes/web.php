@@ -15,6 +15,11 @@ Route::middleware(['auth'])->group(function () {
 
     //-------------------------- CLIENT -------------------------------//
     Route::get('/listaClienti', [\App\Http\Controllers\ClientController::class, 'listaClienti'])->name('client.listaClienti');
+
+    //-------------------------- ACTIVITY -------------------------------//
+    Route::get('/listaAttivita', [\App\Http\Controllers\ActivityController::class, 'listaAttivita'])->name('activity.listaAttivita');
+
+
 });
 
 

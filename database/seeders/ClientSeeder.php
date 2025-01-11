@@ -60,5 +60,7 @@ class ClientSeeder extends Seeder
                 'name' => 'topolino6'
             ],
         ]);
+
+        Client::factory(50)->create();
     }
 }

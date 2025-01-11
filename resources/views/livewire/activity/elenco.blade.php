@@ -5,17 +5,21 @@
             <input wire:model="name" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="nome operatore" required />
         </div>
         <div>
-            <input wire:model="voucher" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="voucher" />
+            <select wire:model="tipo" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <option selected value="">Seleziona Tipo</option>
+                <option value="mensile">mensile</option>
+                <option value="orario">orario</option>
+            </select>
         </div>
         <div>
-            <input wire:model="scadenza" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="scadenza"/>
+            <input wire:model="cost" type="number" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="cost"/>
         </div>
         <div>
             <button wire:click="inserisciOrModifica" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                {{$visualizzaListaClienti ? 'Inserisci' : 'Modifica'}}
+                {{$visualizzaLista ? 'Inserisci' : 'Modifica'}}
             </button>
         </div>
-        @if(!$visualizzaListaClienti)
+        @if(!$visualizzaLista)
             <div>
                 <button wire:click="annulla" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     Annulla
@@ -27,41 +31,41 @@
 
             </div>
             <div>
-                <input wire:model.live.debounce.400ms="testoRicerca" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="ricerca cliente" />
+                <input wire:model.live.debounce.400ms="testoRicerca" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="ricerca attività" />
             </div>
         @endif
     </div>
 
-    @if($visualizzaListaClienti)
+    @if($visualizzaLista)
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     <th scope="col" class="px-6 py-3">
-                        Lista Clienti
+                        Lista Attività
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        voucher
+                        tipo
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        scadenza
+                        Costo
                     </th>
                     <th scope="col" class="px-6 py-3">
-
+                        Attività
                     </th>
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($listaRagazziPaginate as $item)
+                @foreach($listaAttivitaPaginate as $item)
                     <tr class="bg-gray-800 hover:bg-gray-600">
                         <td class="px-6 py-4 whitespace-nowrap text-white">
                             {{$item->id}} - {{$item->name}}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-white">
-                            {{$item->voucher}}
+                            {{$item->tipo}}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-white">
-                            {{$item->scadenza}}
+                            {{$item->cost}}
                         </td>
                         <td class="px-6 py-4 text-right">
                             <button
@@ -87,7 +91,7 @@
         </div>
 
         <div class="mt-4">
-            {{$listaRagazziPaginate->links(data: ['scrollTo' => false])}}
+            {{$listaAttivitaPaginate->links(data: ['scrollTo' => false])}}
         </div>
 
     @endif
@@ -129,5 +133,6 @@
         });
     </script>
 </div>
+
 
 
