@@ -7,23 +7,20 @@ use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
+use Livewire\WithoutUrlPagination;
+use Livewire\WithPagination;
 
 class Elenco extends Component
 {
+    use WithPagination, WithoutUrlPagination;
 
-    public $listaOperatori;
     public $visualizzaListaOperatori = true;
     public $name;
     public $email;
     public $oresettimanali;
     public $oresaldo;
     public $password;
-
-
-    public function mount($listaOperatori)
-    {
-        $this->listaOperatori = $listaOperatori;
-    }
+    public $operatoreDaModificare;
 
     public function inserisciOrModifica(UserService $userService)
     {
@@ -31,14 +28,24 @@ class Elenco extends Component
         $request->merge([
             'name' => $this->name,
             'email' => $this->email,
-            'password' => Hash::make($this->password),
+            'password' => $this->password ? Hash::make($this->password) : null,
             'oresettimanali' => $this->oresettimanali,
             'oresaldo' => 0,
             'role' => 0,
         ]);
-        $nuovoOperatore = $userService->inserisciUser($request);
-        $this->listaOperatori->unshift($nuovoOperatore);
-        $this->dispatch('aggiungi');
+        if ($this->visualizzaListaOperatori){
+            $res = $userService->inserisciUser($request);
+        } else {
+            $res = $userService->modificaUser($this->operatoreDaModificare, $request);
+        }
+
+        $this->reset('name', 'email', 'password', 'oresettimanali', 'operatoreDaModificare');
+        $this->visualizzaListaOperatori = true;
+
+        $this->dispatch('aggiungi', [
+            'testo' => $res[0],
+            'icon' => $res[1],
+        ]);
     }
 
     public function modifica(User $item)
@@ -48,6 +55,7 @@ class Elenco extends Component
         $this->email = $item->email;
         $this->oresettimanali = $item->oresettimanali;
         $this->oresaldo = $item->oresaldo;
+        $this->operatoreDaModificare = $item;
     }
 
     public function annulla()
@@ -59,11 +67,12 @@ class Elenco extends Component
     public function elimina(UserService $userService, $idUser)
     {
         $userService->eliminaUser($idUser);
-        $this->listaOperatori = $this->listaOperatori->where('id', '!=', $idUser);
     }
 
-    public function render()
+    public function render(UserService $userService)
     {
-        return view('livewire.user.elenco');
+        return view('livewire.user.elenco', [
+            'listaOperatori' => $userService->listaOperatoriPaginate()
+        ]);
     }
 }

@@ -18,10 +18,14 @@ class CarService
         return $carDaInviareALog;
     }
 
-    public function inserisci($nomeVettura)
+    public function inserisci($request)
     {
-        Car::insert([
-            'name' => $nomeVettura
-        ]);
+        Car::create($request->all());
+    }
+
+    public function modifica(Car $car, $request)
+    {
+        $car->name = $request->name;
+        $car->save();
     }
 }

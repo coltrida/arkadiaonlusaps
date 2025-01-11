@@ -2,7 +2,7 @@
     <x-slot:title>{{$title}}</x-slot:title>
 
     <div>
-        <livewire:user.elenco />
+        <livewire:user.presenze />
     </div>
 
 </x-layouts.stile>

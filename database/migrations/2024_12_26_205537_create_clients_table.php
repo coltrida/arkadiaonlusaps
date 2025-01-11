@@ -17,6 +17,7 @@ return new class extends Migration
             $table->float('voucher')->nullable();
             $table->date('scadenza')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

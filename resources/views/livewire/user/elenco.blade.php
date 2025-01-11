@@ -1,6 +1,6 @@
-<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg min-h-screen">
 
-    <div class="grid gap-6 mb-6 md:grid-cols-6">
+    <div class="grid gap-6 mb-6 md:grid-cols-6 pt-4">
         <div>
             <input wire:model="name" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="nome operatore" required />
         </div>
@@ -32,8 +32,9 @@
     </div>
 
     @if($visualizzaListaOperatori)
-    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
         <tr>
             <th scope="col" class="px-6 py-3">
                 Lista Operatori
@@ -87,15 +88,20 @@
             </tr>
         @endforeach
         </tbody>
-    </table>
+            </table>
+        </div>
+
+        <div class="mt-4">
+            {{$listaOperatori->links(data: ['scrollTo' => false])}}
+        </div>
     @endif
 
     <script>
         window.addEventListener('aggiungi', event => {
             Swal.fire({
-                title: "Operatore inserito",
-                text: "Operatore inserito correttamente",
-                icon: "success",
+                title: "Esito",
+                text: event.detail[0].testo,
+                icon: event.detail[0].icon,
                 showConfirmButton: false,
                 timer: 2000
             });

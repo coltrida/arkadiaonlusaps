@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('tipo');
             $table->float('cost');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

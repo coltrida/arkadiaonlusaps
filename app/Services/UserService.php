@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\QueryException;
 
 class UserService
 {
@@ -17,23 +17,68 @@ class UserService
         return User::where('role', '<>', 1)->latest()->get();
     }
 
-    public function eliminaUser($idUser)
+    public function listaOperatoriPaginate()
     {
-        User::find($idUser)->delete();
+        return User::where('role', '<>', 1)->latest()->paginate(5);
     }
 
-    public function modificaUser($user, $request)
+    public function eliminaUser($idUser)
     {
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->oresaldo = $request->oresaldo;
-        $user->oresettimanali = $request->oresettimanali;
+        $user = User::find($idUser);
+        $user->email = 'cancellato'.$user->id.'@cancellato.it';
         $user->save();
+        $user->delete();
+    }
+
+    public function modificaUser(User $user, $request)
+    {
+        try {
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->oresaldo = $request->oresaldo;
+            $user->oresettimanali = $request->oresettimanali;
+            $user->save();
+            return ['Operatore Modificato Correttamente!', 'success'];
+        } catch (QueryException $e) {
+            // Errore specifico legato al database
+            if ($e->getCode() == 23000) { // Violazione dei vincoli (es. unique)
+                if (!$request->name){
+                    return ['Nome Obbligatorio - modifica non effettuata', 'error'];
+                } elseif (!$request->email){
+                    return ['Email Obbligatorio - modifica non effettuata', 'error'];
+                }
+                return ['email già presente - modifica non effettuata', 'error'];
+            }
+            return [$e->getMessage(), 'error'];
+        } catch (\Exception $e) {
+            // Errore generico
+            return [$e->getMessage(), 'error'];
+        }
     }
 
     public function inserisciUser($request)
     {
-        return User::create($request->all());
+        //dd($request);
+        try {
+            User::create($request->all());
+            return ['Operatore Inserito Correttamente!', 'success'];
+        } catch (QueryException $e) {
+            // Errore specifico legato al database
+            if ($e->getCode() == 23000) { // Violazione dei vincoli (es. unique)
+                if (!$request->name){
+                    return ['Nome Obbligatorio - inserimento non effettuato', 'error'];
+                } elseif (!$request->email){
+                    return ['Email Obbligatoria - inserimento non effettuato', 'error'];
+                }elseif (!$request->password){
+                    return ['Password Obbligatoria - inserimento non effettuato', 'error'];
+                }
+                return ['email già presente - inserimento non effettuato', 'error'];
+            }
+            return [$e->getMessage(), 'error'];
+        } catch (\Exception $e) {
+            // Errore generico
+            return [$e->getMessage(), 'error'];
+        }
     }
 
     public function associaOperatoreOresettimanali($request)
