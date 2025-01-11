@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Associa;
 use App\Models\AttivitaCliente;
 use App\Models\Client;
 use Illuminate\Database\QueryException;
@@ -67,11 +66,6 @@ class ClientService
             // Errore generico
             return [$e->getMessage(), 'error'];
         }
-    }
-
-    public function listaAssociazioniAttivitaClientPaginate()
-    {
-        return Associa::with('client', 'activity')->orderBy('activity_id')->paginate(5);
     }
 
     public function listaAttivitaClientPaginate()

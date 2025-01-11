@@ -2,15 +2,52 @@
 
     <div class="grid gap-6 mb-6 md:grid-cols-6 pt-4">
         <div>
-            <input wire:model="giorno" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+            <select wire:model="activity_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <option selected value="">Attività</option>
+                @foreach($listaAttivita as $item)
+                    <option value="{{$item->id}}">{{$item->name}}</option>
+                @endforeach
+            </select>
         </div>
         <div>
-            <input wire:model="ore" type="number" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="ore" />
+            <div x-data="{ open: false }">
+                <!-- Finestra fissa -->
+                <div x-show="open" x-transition class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
+                    <div class="bg-black rounded-lg w-96 h-72 overflow-hidden shadow-lg">
+                        <!-- Header della finestra -->
+                        <div class="flex justify-between items-center p-4 border-b">
+                            <h2 class="text-lg font-semibold">Lista Clienti</h2>
+                            <button @click="open = false" class="text-red-500">Chiudi</button>
+                        </div>
+
+                        <!-- Lista con scorrimento -->
+                        <div class="p-4 overflow-y-auto h-56">
+                            <ul>
+                                @foreach($listaRagazzi as $client)
+                                    <div class="flex items-center mb-4">
+                                        <input wire:model="clients" id="default-checkbox-{{$client->id}}" type="checkbox" value="{{$client->id}}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="default-checkbox-{{$client->id}}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{$client->name}}</label>
+                                    </div>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <button @click="open = true" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    Sel. Clienti
+                </button>
+            </div>
         </div>
         <div>
             <button wire:click="inserisci" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                 Inserisci
             </button>
+        </div><div>
+        </div><div>
+
+        </div>
+        <div>
+            <input wire:model.live.debounce.400ms="testoRicerca" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="ricerca cliente" />
         </div>
     </div>
 
@@ -19,13 +56,13 @@
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     <th scope="col" class="px-6 py-3">
-                        Lista Presenze
+                        Lista Associazioni
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        giorno
+                        Attività
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        ore
+                        Cliente
                     </th>
                     <th scope="col" class="px-6 py-3 text-center">
                         Azioni
@@ -33,16 +70,16 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($listaPresenzePaginate as $item)
+                @foreach($listaAssociazioniAttivitaClientPaginate as $item)
                     <tr class="bg-gray-800 hover:bg-gray-600">
                         <td class="px-6 py-4 whitespace-nowrap text-white">
-                           # {{$item->id}}
+                            # {{$item->id}}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-white">
-                            {{$item->giornoformattato}}
+                            {{$item->activity->name}}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-white">
-                            {{$item->ore}}
+                            {{$item->client->name}}
                         </td>
                         <td class="px-6 py-4 text-center">
                             <button
@@ -61,7 +98,7 @@
         </div>
 
         <div class="mt-4">
-            {{$listaPresenzePaginate->links(data: ['scrollTo' => false])}}
+            {{$listaAssociazioniAttivitaClientPaginate->links(data: ['scrollTo' => false])}}
         </div>
 
     <script>
@@ -71,7 +108,7 @@
                 text: event.detail[0].testo,
                 icon: event.detail[0].icon,
                 showConfirmButton: false,
-                timer: 2000
+                timer: 3000
             });
         });
 
@@ -90,7 +127,7 @@
                     component.elimina(event.detail.id).then(function (res){
                         Swal.fire({
                             title: "Eliminato!",
-                            text: "L'operatore è stato eliminato.",
+                            text: "l'associazione è stata eliminata.",
                             icon: "success",
                             showConfirmButton: false,
                             timer: 2000
@@ -101,5 +138,6 @@
         });
     </script>
 </div>
+
 
 

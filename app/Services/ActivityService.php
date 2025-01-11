@@ -80,10 +80,37 @@ class ActivityService
         $client->delete();
     }
 
+    public function listaAssociazioniAttivitaClientPaginate()
+    {
+        return Associa::with('client', 'activity')->orderBy('id', 'desc')->paginate(5);
+    }
+
     public function inserisciAssociazioneAttivitaClient($request)
     {
-        $activity = Activity::find($request->activity_id);
-        $activity->associaclients()->attach($request->clients);
+        try {
+            $activity = Activity::findOrFail($request->activity_id);
+            $activity->associaclients()->attach($request->clients);
+            return ['Associazione inserita Correttamente!', 'success'];
+        } catch (QueryException $e) {
+            // Errore specifico legato al database
+            if ($e->getCode() == 23000) { // Violazione dei vincoli (es. unique)
+                if (!$request->activity_id){
+                    return ['Attività non selezionata - inserimento non effettuato', 'error'];
+                }elseif (!$request->clients){
+                    return ['seleziona clienti - inserimento non effettuato', 'error'];
+                }
+                return ['associazione già presente - inserimento non effettuato', 'error'];
+            }
+            return [$e->getMessage(), 'error'];
+        } catch (\Exception $e) {
+            // Errore generico
+            if (!$request->activity_id){
+                return ['selezione attività obbligatoria - inserimento non effettuato', 'error'];
+            }elseif (!$request->clients){
+                return ['selezione clienti obbligatoria - inserimento non effettuato', 'error'];
+            }
+            return [$e->getMessage(), 'error'];
+        }
     }
 
     public function eliminaAssociazioneAttivitaCliente($id)

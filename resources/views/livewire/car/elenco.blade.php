@@ -35,7 +35,7 @@
             @foreach($listaVetture as $item)
                 <tr class="bg-gray-800 hover:bg-gray-600">
                     <td class="px-6 py-4 whitespace-nowrap text-white">
-                        {{$item->id}} - {{$item->name}}
+                        # {{$item->id}} - {{$item->name}}
                     </td>
                     <td class="px-6 py-4 text-right">
                         <button

@@ -12,4 +12,11 @@ class ClientController extends Controller
             'title' => 'Lista Clienti'
         ]);
     }
+
+    public function associaAttivitaClienti()
+    {
+        return view('pages.client.associaAttivitaClienti', [
+            'title' => 'Lista Clienti'
+        ]);
+    }
 }

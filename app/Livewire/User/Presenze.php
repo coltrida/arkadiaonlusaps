@@ -27,7 +27,7 @@ class Presenze extends Component
             'ore' => $this->ore,
             'mese' => $giorno?->month,
             'anno' => $giorno?->year,
-            'settimana' => $giorno?->week,
+            'settimana' => $giorno?->weekOfYear,
         ]);
         $res = $presenzaService->inserisciPresenza($request);
 
