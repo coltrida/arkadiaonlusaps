@@ -3,6 +3,13 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/calcoloSaldo', [\App\Http\Controllers\FrontController::class, 'calcoloSaldo'])->name('calcoloSaldo');
+
+Route::get('/migrate', function (){
+//    \Illuminate\Support\Facades\Artisan::call('migrate --path=/database/migrations/2023_09_17_203300_add_descrizione_to_table.php');
+//    \Illuminate\Support\Facades\Artisan::call('migrate --path=/database/migrations/2022_04_27_193446_add_giorno_to_primanota.php');
+});
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [\App\Http\Controllers\FrontController::class, 'index'])->name('inizio');
 

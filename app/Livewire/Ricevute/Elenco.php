@@ -3,13 +3,16 @@
 namespace App\Livewire\Ricevute;
 
 use App\Models\Activity;
+use App\Models\Ricevuta;
 use App\Services\ActivityService;
 use App\Services\LogService;
 use App\Services\RicevuteService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Livewire\Component;
 use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
+use Illuminate\Support\Str;
 
 class Elenco extends Component
 {
@@ -45,41 +48,46 @@ class Elenco extends Component
 
         $res = $ricevuteService->inserisciRicevuta($request);
 
-        $tipo = 'inserimento ricevuta';
-        $data = 'Ricevuta con data: '.$this->dataRicevuta.' inserita, per il nominativo: '.$this->nominativo;
-        $logService->scriviLog(auth()->id(), $tipo, $data);
-
-        $this->reset();
-
         $this->dispatch('aggiungi', [
             'testo' => $res[0],
             'icon' => $res[1],
         ]);
+
+        if ($res[2]){
+            $tipo = 'inserimento ricevuta';
+            $data = 'Ricevuta con id: '.$res[2]->id.' inserita, per il nominativo: '.$this->nominativo;
+            $logService->scriviLog(auth()->id(), $tipo, $data);
+
+
+
+            $this->reset();
+
+            $ricevuta = $res[2];
+            $pdf = Pdf::loadView('livewire.pdf.ricevuta', compact('ricevuta'));
+            $fileName = Str::slug($ricevuta->progressivo."-".$ricevuta->anno."-".$ricevuta->destinatario).".pdf";
+
+            return response()->streamDownload(function () use($pdf) {
+                echo $pdf->stream();
+            }, $fileName);
+        }
     }
 
-    public function elimina(ActivityService $activityService, LogService $logService, $idAttivita)
+    public function stampa(Ricevuta $ricevuta)
     {
-        $activityService->elimina($idAttivita);
+        $pdf = Pdf::loadView('livewire.pdf.ricevuta', compact('ricevuta'));
+        $fileName = Str::slug($ricevuta->progressivo."-".$ricevuta->anno."-".$ricevuta->destinatario).".pdf";
+        return response()->streamDownload(function () use($pdf) {
+            echo  $pdf->stream();
+        }, $fileName);
+    }
 
-        $tipo = 'eliminazione attività';
-        $data = 'Attività con id = '.$idAttivita.' eliminata';
+    public function elimina(RicevuteService $ricevuteService, LogService $logService, $id)
+    {
+        $ricevuteService->eliminaRicevuta($id);
+
+        $tipo = 'eliminazione ricevuta';
+        $data = 'Ricevuta con id = '.$id.' eliminata';
         $logService->scriviLog(auth()->id(), $tipo, $data);
-    }
-
-
-    public function modifica(Activity $item)
-    {
-        $this->visualizzaLista = false;
-        $this->name = $item->name;
-        $this->tipo = $item->tipo;
-        $this->cost = $item->cost;
-        $this->attivitaDaModificare = $item;
-    }
-
-    public function annulla()
-    {
-        $this->visualizzaLista = true;
-        $this->reset('name', 'tipo', 'cost');
     }
 
     public function render(RicevuteService $ricevuteService)

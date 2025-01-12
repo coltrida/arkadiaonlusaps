@@ -2,7 +2,7 @@
     <table style="width: 100%; margin-bottom: 0">
         <tr>
             <td style="width: 65%">
-                <img src="{{asset('/img/logo.png')}}" style="width: 200px">
+                <img src="{{asset('img/logo.png')}}" style="width: 200px">
             </td>
             <td style="width: 35%">
                 <div>ARKADIA ONLUS APS</div>

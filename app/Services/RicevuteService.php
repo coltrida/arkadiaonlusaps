@@ -28,7 +28,7 @@ class RicevuteService
                 ['anno', $anno]
             ])->first();
             if ($ricevutaGiaPresente){
-                return ['numero progressivo già presente, ricevuta non inserita', ''];
+                return ['numero progressivo già presente - inserimento non effettuato', 'error', ''];
             }
         } else {
             $ultimaRicevuta = Ricevuta::where('anno', $anno)->orderBy('progressivo', 'DESC')->first();
@@ -49,7 +49,7 @@ class RicevuteService
             'progressivo' => $progressivo,
         ]);
 
-        return ["ricevuta con id = $ricevuta->id inserita", $ricevuta];
+        return ["ricevuta con id = $ricevuta->id inserita", 'success', $ricevuta];
     }
 
     public function eliminaRicevuta($id)
