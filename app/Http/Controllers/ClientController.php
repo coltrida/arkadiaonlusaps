@@ -16,7 +16,14 @@ class ClientController extends Controller
     public function associaAttivitaClienti()
     {
         return view('pages.client.associaAttivitaClienti', [
-            'title' => 'Lista Clienti'
+            'title' => 'Associa Attività - Cliente'
+        ]);
+    }
+
+    public function presenzeAttivita()
+    {
+        return view('pages.client.presenzeAttivita', [
+            'title' => 'Presenze Attività'
         ]);
     }
 }

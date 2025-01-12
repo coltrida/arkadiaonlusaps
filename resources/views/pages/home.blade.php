@@ -3,7 +3,7 @@
     <div class="grid gap-6 lg:grid-cols-2 lg:gap-3">
 
         <a
-            href="https://laracasts.com"
+            href="{{route('client.presenzeAttivita')}}"
             class="flex text-white items-start gap-4 rounded-lg bg-bg-zinc-900 p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-zinc-700 focus:outline-none focus-visible:ring-[#FF2D20] dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]"
         >
             <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16">
@@ -29,7 +29,7 @@
         </a>
 
         <a
-            href="https://laracasts.com"
+            href="{{route('trip.inserisciChilometri')}}"
             class="flex text-white items-start gap-4 rounded-lg bg-bg-zinc-900 p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-zinc-700 focus:outline-none focus-visible:ring-[#FF2D20] dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]"
         >
             <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16">
@@ -132,9 +132,9 @@
                  class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50"
                  x-transition>
                 <div class="items-start gap-4 rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-black/20 focus:outline-none focus-visible:ring-[#FF2D20] lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20] lg:w-1/3 sm:w-full p-6">
-                    <a href="{{route('client.associaAttivitaClienti')}}" wire:navigate class="text-xl font-bold mb-4 block">Associa Attività - Ragazzo</a>
-                    <a href="#" wire:navigate class="text-xl font-bold mb-4 block">Associa Operatore - Ore Settimanali</a>
-                    <a href="#" wire:navigate class="text-xl font-bold mb-4">Log</a>
+                    <a href="{{route('client.associaAttivitaClienti')}}" wire:navigate class="text-xl font-bold mb-4 block">Associa Attività - Cliente</a>
+                    <a href="{{route('user.associaOperatoreOre')}}" wire:navigate class="text-xl font-bold mb-4 block">Associa Operatore - Ore Settimanali</a>
+                    <a href="{{route('log.listaLog')}}" wire:navigate class="text-xl font-bold mb-4">Log</a>
 
                     <!-- Buttons -->
                     <div class="flex justify-end space-x-2">
@@ -148,7 +148,7 @@
         </div>
 
         <a
-            href="https://laracasts.com"
+            href="{{route('agricoltura')}}"
             class="flex text-white items-start gap-4 rounded-lg bg-bg-zinc-900 p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-zinc-700 focus:outline-none focus-visible:ring-[#FF2D20] dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]"
         >
             <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16">
@@ -174,7 +174,7 @@
         </a>
 
         <a
-            href="https://laracasts.com"
+            href="{{route('ricevute')}}"
             class="flex text-white items-start gap-4 rounded-lg bg-bg-zinc-900 p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-zinc-700 focus:outline-none focus-visible:ring-[#FF2D20] dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]"
         >
             <div class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16">

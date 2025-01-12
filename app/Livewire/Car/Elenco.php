@@ -4,6 +4,7 @@ namespace App\Livewire\Car;
 
 use App\Models\Car;
 use App\Services\CarService;
+use App\Services\LogService;
 use Illuminate\Http\Request;
 use Livewire\Component;
 
@@ -14,7 +15,7 @@ class Elenco extends Component
     public $name;
     public $vetturaDaModificare;
 
-    public function inserisciOrModifica(CarService $carService)
+    public function inserisciOrModifica(CarService $carService, LogService $logService)
     {
         $request = new Request();
         $request->merge([
@@ -23,8 +24,14 @@ class Elenco extends Component
 
         if ($this->visualizzaListaVetture){
             $carService->inserisci($request);
+            $tipo = 'inserimento vettura';
+            $data = 'Vettura: '.$this->name.' inserita';
+            $logService->scriviLog(auth()->id(), $tipo, $data);
         } else {
             $carService->modifica($this->vetturaDaModificare, $request);
+            $tipo = 'modifica vettura';
+            $data = 'Vettura: '.$this->name.' modificata';
+            $logService->scriviLog(auth()->id(), $tipo, $data);
         }
 
         $this->reset('name', 'vetturaDaModificare');
@@ -32,9 +39,13 @@ class Elenco extends Component
         $this->dispatch('aggiungi');
     }
 
-    public function elimina(CarService $carService, $idCar)
+    public function elimina(CarService $carService, LogService $logService, $idCar)
     {
         $carService->elimina($idCar);
+
+        $tipo = 'eliminazione vettura';
+        $data = 'Vettura con id = '.$idCar.' eliminata';
+        $logService->scriviLog(auth()->id(), $tipo, $data);
     }
 
     public function modifica(Car $item)

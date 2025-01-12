@@ -38,7 +38,10 @@
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     <th scope="col" class="px-6 py-3">
-                        Lista Clienti
+                        id
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        nome
                     </th>
                     <th scope="col" class="px-6 py-3">
                         voucher
@@ -46,8 +49,8 @@
                     <th scope="col" class="px-6 py-3">
                         scadenza
                     </th>
-                    <th scope="col" class="px-6 py-3">
-
+                    <th scope="col" class="px-6 py-3 text-center">
+                        attività
                     </th>
                 </tr>
                 </thead>
@@ -55,7 +58,10 @@
                 @foreach($listaRagazziPaginate as $item)
                     <tr class="bg-gray-800 hover:bg-gray-600">
                         <td class="px-6 py-4 whitespace-nowrap text-white">
-                            # {{$item->id}} - {{$item->name}}
+                            # {{$item->id}}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-white">
+                            {{$item->name}}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-white">
                             {{$item->voucher}}
@@ -63,7 +69,7 @@
                         <td class="px-6 py-4 whitespace-nowrap text-white">
                             {{$item->scadenza}}
                         </td>
-                        <td class="px-6 py-4 text-right">
+                        <td class="px-6 py-4 text-center">
                             <button
                                 title="elimina" @click="$dispatch('info', { id: '{{$item->id}}' })" class="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800">
                                 <span class="relative px-3 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">

@@ -80,9 +80,14 @@ class ActivityService
         $client->delete();
     }
 
-    public function listaAssociazioniAttivitaClientPaginate()
+    public function listaAssociazioniAttivitaClientPaginate($testoRicerca)
     {
-        return Associa::with('client', 'activity')->orderBy('id', 'desc')->paginate(5);
+        return Associa::with('client', 'activity')
+            ->whereHas('client', function ($c) use ($testoRicerca){
+                $c->where('name', 'like', '%'.$testoRicerca.'%');
+            })
+            ->orderBy('id', 'desc')
+            ->paginate(5);
     }
 
     public function inserisciAssociazioneAttivitaClient($request)
@@ -125,19 +130,40 @@ class ActivityService
 
     public function inserisciAttivitaClient($request)
     {
-        $attivita = Activity::find($request->activity_id);
-
-        foreach ($request->clients as $idClient){
-            AttivitaCliente::create([
-                'activity_id' => $request->activity_id,
-                'client_id' => $idClient,
-                'quantita' => $request->quantita,
-                'costo' => (float) $request->quantita * (float) $attivita->cost,
-                'giorno' => $request->giorno,
-                'anno' => Carbon::make($request->giorno)->year,
-                'mese' => Carbon::make($request->giorno)->month,
-                'note' => $request->note,
-            ]);
+        try {
+            $attivita = Activity::findOrFail($request->activity_id);
+            foreach ($request->clients as $idClient){
+                AttivitaCliente::create([
+                    'activity_id' => $request->activity_id,
+                    'client_id' => $idClient,
+                    'quantita' => $request->quantita,
+                    'costo' => (float) $request->quantita * (float) $attivita->cost,
+                    'giorno' => $request->giorno,
+                    'anno' => Carbon::make($request->giorno)->year,
+                    'mese' => Carbon::make($request->giorno)->month,
+                    'note' => $request->note,
+                ]);
+            }
+            return ['Inserimento presenze eseguita correttamente!', 'success'];
+        } catch (QueryException $e) {
+            // Errore specifico legato al database
+            if ($e->getCode() == 23000) { // Violazione dei vincoli (es. unique)
+                if (!$request->activity_id){
+                    return ['Attività non selezionata - inserimento non effettuato', 'error'];
+                }elseif (!$request->clients){
+                    return ['seleziona clienti - inserimento non effettuato', 'error'];
+                }
+                return ['associazione già presente - inserimento non effettuato', 'error'];
+            }
+            return [$e->getMessage(), 'error'];
+        } catch (\Exception $e) {
+            // Errore generico
+            if (!$request->activity_id){
+                return ['selezione attività obbligatoria - inserimento non effettuato', 'error'];
+            }elseif (!$request->clients){
+                return ['selezione clienti obbligatoria - inserimento non effettuato', 'error'];
+            }
+            return [$e->getMessage(), 'error'];
         }
     }
 

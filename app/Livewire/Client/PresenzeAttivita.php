@@ -10,13 +10,20 @@ use Livewire\Component;
 use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 
-class AssociaAttivita extends Component
+class PresenzeAttivita extends Component
 {
     use WithPagination, WithoutUrlPagination;
 
     public $activity_id;
     public $clients = [];
-    public $testoRicerca;
+    public $giorno;
+    public $quantita;
+    public $note;
+
+    public function attivitaSelezionata(ActivityService $activityService)
+    {
+        $this->clients = $activityService->listaIdClientsFromIdActivity($this->activity_id);
+    }
 
     public function inserisci(ActivityService $activityService, LogService $logService)
     {
@@ -24,14 +31,17 @@ class AssociaAttivita extends Component
         $request->merge([
             'activity_id' => $this->activity_id,
             'clients' => $this->clients,
+            'giorno' => $this->giorno,
+            'quantita' => $this->quantita,
+            'note' => $this->note,
         ]);
 
-        $res = $activityService->inserisciAssociazioneAttivitaClient($request);
-        $tipo = 'associazione attività - cliente';
-        $data = 'Associata attività con id = '.$this->activity_id.' con i clienti: '. implode(",",$this->clients);
+        $res = $activityService->inserisciAttivitaClient($request);
+        $tipo = 'inserimento presenze attività - cliente';
+        $data = 'Inserita presenza attività con id = '.$this->activity_id.' per i clienti: '. implode(",",$this->clients);
         $logService->scriviLog(auth()->id(), $tipo, $data);
 
-        $this->reset('activity_id');
+        $this->reset('activity_id', 'giorno', 'quantita', 'note');
         $this->clients = [];
 
         $this->dispatch('aggiungi', [
@@ -42,18 +52,18 @@ class AssociaAttivita extends Component
 
     public function elimina(ActivityService $activityService, LogService $logService, $idAssociazione)
     {
-        $activityService->eliminaAssociazioneAttivitaCliente($idAssociazione);
+        $activityService->eliminaAttivitaClient($idAssociazione);
 
-        $tipo = 'eliminazione associazione attività - cliente';
-        $data = 'Eliminata associazione con id = '.$idAssociazione;
+        $tipo = 'eliminazione presenza attività - cliente';
+        $data = 'Eliminata presenza attività con id = '.$idAssociazione;
         $logService->scriviLog(auth()->id(), $tipo, $data);
     }
 
 
     public function render(ActivityService $activityService, ClientService $clientService)
     {
-        return view('livewire.client.associa-attivita', [
-            'listaAssociazioniAttivitaClientPaginate' => $activityService->listaAssociazioniAttivitaClientPaginate($this->testoRicerca),
+        return view('livewire.client.presenze-attivita', [
+            'listaAttivitaClientPaginate' => $clientService->listaAttivitaClientPaginate(),
             'listaAttivita' => $activityService->listaAttivita(),
             'listaRagazzi' => $clientService->listaRagazzi()
         ]);

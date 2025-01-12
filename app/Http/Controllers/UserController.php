@@ -20,4 +20,11 @@ class UserController extends Controller
             'title' => 'Presenze Operatore'
         ]);
     }
+
+    public function associaOperatoreOre()
+    {
+        return view('pages.user.associaOperatoreOre', [
+            'title' => 'Associa Operatore - Ore Settimanali'
+        ]);
+    }
 }

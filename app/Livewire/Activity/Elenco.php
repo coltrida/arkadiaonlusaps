@@ -4,6 +4,7 @@ namespace App\Livewire\Activity;
 
 use App\Models\Activity;
 use App\Services\ActivityService;
+use App\Services\LogService;
 use Illuminate\Http\Request;
 use Livewire\Component;
 use Livewire\WithoutUrlPagination;
@@ -20,7 +21,7 @@ class Elenco extends Component
     public $attivitaDaModificare;
     public $testoRicerca;
 
-    public function inserisciOrModifica(ActivityService $activityService)
+    public function inserisciOrModifica(ActivityService $activityService, LogService $logService)
     {
         $request = new Request();
         $request->merge([
@@ -31,8 +32,14 @@ class Elenco extends Component
 
         if ($this->visualizzaLista){
             $res = $activityService->inserisci($request);
+            $tipo = 'inserimento attività';
+            $data = 'Attività: '.$this->name.' inserita';
+            $logService->scriviLog(auth()->id(), $tipo, $data);
         } else {
             $res = $activityService->modifica($this->attivitaDaModificare, $request);
+            $tipo = 'modifica attività';
+            $data = 'Attività: '.$this->name.' modificata';
+            $logService->scriviLog(auth()->id(), $tipo, $data);
         }
 
         $this->reset('name', 'tipo', 'cost', 'attivitaDaModificare');
@@ -44,9 +51,13 @@ class Elenco extends Component
         ]);
     }
 
-    public function elimina(ActivityService $activityService, $idAttivita)
+    public function elimina(ActivityService $activityService, LogService $logService, $idAttivita)
     {
         $activityService->elimina($idAttivita);
+
+        $tipo = 'eliminazione attività';
+        $data = 'Attività con id = '.$idAttivita.' eliminata';
+        $logService->scriviLog(auth()->id(), $tipo, $data);
     }
 
 

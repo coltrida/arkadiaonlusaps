@@ -58,7 +58,6 @@ class UserService
 
     public function inserisciUser($request)
     {
-        //dd($request);
         try {
             User::create($request->all());
             return ['Operatore Inserito Correttamente!', 'success'];
@@ -83,8 +82,22 @@ class UserService
 
     public function associaOperatoreOresettimanali($request)
     {
-        $user = User::find($request->user_id);
-        $user->oresettimanali = $request->oresettimanali;
-        $user->save();
+        try {
+            $user = User::findOrFail($request->user_id);
+            $user->oresettimanali = $request->oresettimanali;
+            $user->save();
+            return ['Associazione Inserita Correttamente!', 'success'];
+        } catch (QueryException $e) {
+            // Errore specifico legato al database
+            if ($e->getCode() == 23000) { // Violazione dei vincoli (es. unique)
+                if (!$request->user_id){
+                    return ['Operatore Obbligatorio - Associazione non effettuata', 'error'];
+                } elseif (!$request->oresettimanali){
+                    return ['Ore Obbligatorie - Associazione non effettuata', 'error'];
+                }
+                return ['errore - Associazione non effettuata', 'error'];
+            }
+            return [$e->getMessage(), 'error'];
+        }
     }
 }

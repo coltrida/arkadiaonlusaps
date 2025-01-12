@@ -17,6 +17,6 @@ class LogService
 
     public function listaLogPaginate()
     {
-        return Log::latest()->paginate(10);
+        return Log::with('user')->latest()->paginate(10);
     }
 }
