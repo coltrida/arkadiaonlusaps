@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" >
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -28,8 +28,8 @@
     </style>
     @livewireStyles
 </head>
-<body class="font-sans antialiased dark:bg-black bg-black dark:text-white/50">
-<div class="bg-gray-50 text-black/50 dark:bg-black dark:text-white/50">
+<body class="font-sans antialiased bg-black text-white/50">
+<div class="text-black/50 bg-black text-white/50">
     <img id="background" class="absolute -left-20 top-0 max-w-[877px]" src="https://laravel.com/assets/img/welcome/background.svg" alt="Laravel background" />
     <div class="relative min-h-screen flex flex-col items-center justify-center selection:bg-[#FF2D20] selection:text-white">
         <div class="relative w-full max-w-2xl px-6 lg:max-w-7xl">
@@ -37,7 +37,7 @@
             <header class="grid grid-cols-2 items-center gap-2 py-8 lg:grid-cols-12">
                 <div class="col-span-3">
                     <a href="{{route('inizio')}}">
-                        <svg class="w-10 h-10 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-10 h-10 text-gray-800 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                             <path fill-rule="evenodd" d="M11.293 3.293a1 1 0 0 1 1.414 0l6 6 2 2a1 1 0 0 1-1.414 1.414L19 12.414V19a2 2 0 0 1-2 2h-3a1 1 0 0 1-1-1v-3h-2v3a1 1 0 0 1-1 1H7a2 2 0 0 1-2-2v-6.586l-.293.293a1 1 0 0 1-1.414-1.414l2-2 6-6Z" clip-rule="evenodd"/>
                         </svg>
                     </a>
@@ -49,7 +49,7 @@
                 @if (Route::has('login'))
                     <nav class="-mx-3 flex flex-1 justify-end col-span-3">
                         @auth
-                            <select id="mySelect" onchange="handleSelectChange(this)" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+                            <select id="mySelect" onchange="handleSelectChange(this)" class="border text-sm rounded-lg block p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white">
                                 <option selected>{{ Auth::user()->name }}</option>
                                 <option value="option1" data-url="{{route('logout')}}">Logout</option>
                             </select>
@@ -57,7 +57,7 @@
                         @else
                             <a
                                 href="{{ route('login') }}"
-                                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                                class="rounded-md px-3 py-2 ring-1 ring-transparent transition focus:outline-none text-white hover:text-white/80 focus-visible:ring-white"
                             >
                                 Log in
                             </a>
@@ -70,7 +70,7 @@
                 {{ $slot }}
             </main>
 
-            <footer class="py-16 text-center text-sm text-black dark:text-white/70">
+            <footer class="py-16 text-center text-sm text-white/70">
                 @ ColtriCat - 2018
             </footer>
         </div>

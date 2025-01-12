@@ -30,7 +30,7 @@ class StatisticheService
 
     public function chilometriVetture($request)
     {
-        return Trip::with('clients', 'user')
+        return Trip::with('clients', 'car')
             ->where([
                 ['car_id', $request->car_id],
                 ['anno', $request->anno],
@@ -42,6 +42,12 @@ class StatisticheService
 
     public function chilometriRagazzi($request)
     {
-        return Client::with('trips')->find($request->client_id)->trips;
+        return Trip::with('clients', 'user')
+            ->where('anno', $request->anno)
+            ->whereIn('mese', $request->mesi)
+            ->whereHas('clients', function ($c) use ($request){
+                $c->where('clients.id', $request->client_id);
+            })
+            ->get();
     }
 }

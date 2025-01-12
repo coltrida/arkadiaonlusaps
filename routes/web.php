@@ -41,6 +41,12 @@ Route::middleware(['auth'])->group(function () {
     //-------------------------- RICEVUTE -------------------------------//
     Route::get('/ricevute', [\App\Http\Controllers\RicevutaController::class, 'ricevute'])->name('ricevute');
 
+    //-------------------------- STATISTICHE -------------------------------//
+    Route::get('/statistiche/presenzeClienti', [\App\Http\Controllers\StatisticheController::class, 'presenzeClienti'])->name('statistiche.presenzeClienti');
+    Route::get('/statistiche/presenzeOperatori', [\App\Http\Controllers\StatisticheController::class, 'presenzeOperatori'])->name('statistiche.presenzeOperatori');
+    Route::get('/statistiche/chilometriVetture', [\App\Http\Controllers\StatisticheController::class, 'chilometriVetture'])->name('statistiche.chilometriVetture');
+    Route::get('/statistiche/chilometriClienti', [\App\Http\Controllers\StatisticheController::class, 'chilometriClienti'])->name('statistiche.chilometriClienti');
+
 });
 
 
