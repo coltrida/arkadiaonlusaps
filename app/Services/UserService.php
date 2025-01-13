@@ -14,12 +14,12 @@ class UserService
 
     public function listaOperatori()
     {
-        return User::where('role', '<>', 1)->latest()->get();
+        return User::latest()->get();
     }
 
     public function listaOperatoriPaginate()
     {
-        return User::where('role', '<>', 1)->latest()->paginate(5);
+        return User::latest()->paginate(5);
     }
 
     public function eliminaUser($idUser)
