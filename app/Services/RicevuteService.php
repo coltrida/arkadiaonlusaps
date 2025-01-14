@@ -14,7 +14,8 @@ class RicevuteService
 
     public function listaRicevutePaginate($testo)
     {
-        return Ricevuta::where('destinatario', 'like', '%'.$testo.'%')->latest()->paginate(5);
+        return Ricevuta::where('destinatario', 'like', '%'.$testo.'%')
+            ->orderBy('anno', 'desc')->orderBy('progressivo', 'desc')->paginate(5);
     }
 
     public function inserisciRicevuta($request)

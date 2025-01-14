@@ -53,15 +53,18 @@
         </div>
 
         <div>
+            <label for="giorno" class="text-white p-2 lg:hidden">Seleziona giorno:</label>
             <input wire:model="giorno"
                    type="date"
+                   id="giorno"
                    class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"  />
         </div>
 
         <div>
             <input wire:model="quantita"
                    type="number"
-                   class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                   {{ $bloccaQuantita ? 'readonly' : '' }}
+                   class="{{ $bloccaQuantita ? 'cursor-not-allowed bg-gray-400' : '' }} border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                    placeholder="q.tà" />
         </div>
         <div>

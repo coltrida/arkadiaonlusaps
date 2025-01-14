@@ -2,8 +2,10 @@
 
     <div class="grid gap-6 mb-6 md:grid-cols-5">
         <div>
+            <label for="giorno" class="text-white p-2 lg:hidden">Seleziona giorno:</label>
             <input wire:model="dataRicevuta"
                    type="date"
+                   id="giorno"
                    class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"  />
         </div>
         <div>
@@ -80,15 +82,12 @@
     <div class="relative overflow-x-auto sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-400 mb-4">
             <thead class="text-xs uppercase bg-gray-700 text-white">
-            <tr class="text-center">
+            <tr>
                 <th scope="col" class="px-6 py-3">
 
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Id
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Progressivo
+                    Prog.
                 </th>
                 <th scope="col" class="px-6 py-3">
                     Destinatario
@@ -120,6 +119,9 @@
                 <th scope="col" class="px-2 py-3">
                     anno
                 </th>
+                <th scope="col" class="px-6 py-3">
+                    Id
+                </th>
             </tr>
             </thead>
             <tbody>
@@ -136,7 +138,7 @@
                                     </span>
                         </button>
 
-                        <button wire:click="stampa({{$item}})" title="stampa" class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800">
+                        <button wire:click="stampa({{$item}})" title="stampa" class="hidden lg:flex relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-lime-800">
                         <span class="relative px-3 py-2.5 transition-all ease-in duration-75 bg-gray-900 rounded-md group-hover:bg-opacity-0">
                             <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                               <path fill-rule="evenodd" d="M8 3a2 2 0 0 0-2 2v3h12V5a2 2 0 0 0-2-2H8Zm-3 7a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h1v-4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v4h1a2 2 0 0 0 2-2v-5a2 2 0 0 0-2-2H5Zm4 11a1 1 0 0 1-1-1v-4h8v4a1 1 0 0 1-1 1H9Z" clip-rule="evenodd"/>
@@ -146,16 +148,13 @@
 
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-white">
-                        {{$item->id}}
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-white">
                         {{$item->progressivo}}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-white">
                         {{$item->destinatario}}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-white">
-                        {{$item->importo}}
+                        € {{$item->importo}}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-white">
                         {{$item->dataformattata}}
@@ -180,6 +179,9 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-white">
                         {{$item->anno}}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-white">
+                        {{$item->id}}
                     </td>
                 </tr>
             @endforeach

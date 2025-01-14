@@ -11,6 +11,11 @@ use Illuminate\Http\Request;
 
 class ActivityService
 {
+    public function activityFromId($id)
+    {
+        return Activity::find($id);
+    }
+
     public function listaAttivita()
     {
         return Activity::orderBy('name')->get();

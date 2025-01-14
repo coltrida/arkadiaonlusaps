@@ -19,10 +19,18 @@ class PresenzeAttivita extends Component
     public $giorno;
     public $quantita;
     public $note;
+    public $bloccaQuantita = false;
 
     public function attivitaSelezionata(ActivityService $activityService)
     {
         $this->clients = $activityService->listaIdClientsFromIdActivity($this->activity_id);
+        $attivita = $activityService->activityFromId($this->activity_id);
+        if ($attivita->tipo === 'mensile'){
+            $this->quantita = 1;
+            $this->bloccaQuantita = true;
+        } else {
+            $this->bloccaQuantita = false;
+        }
     }
 
     public function inserisci(ActivityService $activityService, LogService $logService)

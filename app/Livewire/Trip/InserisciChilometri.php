@@ -35,6 +35,8 @@ class InserisciChilometri extends Component
             'clients' => $this->clients,
         ]);
 
+        dd($request);
+
         $res = $tripService->inserisciViaggio($request);
         $tipo = 'inserimento viaggio e km';
         $data = 'Inserito viaggio per il giorno '.$this->giorno.' per la macchina con id: '. $this->car_id;
