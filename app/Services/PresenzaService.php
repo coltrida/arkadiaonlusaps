@@ -39,6 +39,9 @@ class PresenzaService
 
     public function listaPresenzePaginate($idUser)
     {
-        return User::with('presenze')->find($idUser)->presenze()->paginate(3);
+        return User::find($idUser)
+            ->presenze()
+            ->orderBy('giorno', 'desc')
+            ->paginate(3);
     }
 }

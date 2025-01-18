@@ -15,6 +15,10 @@ class TripService
 
     public function inserisciViaggio($request)
     {
+        if ($request->clients == []){
+            return ['Inserisci almeno 1 cliente - inserimento non effettuato', 'error'];
+        }
+
         try {
             $trip = Trip::create([
                 'kmPercorsi' => $request->kmPercorsi,

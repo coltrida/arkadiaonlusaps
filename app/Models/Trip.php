@@ -2,11 +2,17 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Trip extends Model
 {
     protected $guarded = [];
+
+    public function getGiornoformattatoAttribute()
+    {
+        return Carbon::make($this->giorno)->format('d-m-Y');
+    }
 
     public function user()
     {

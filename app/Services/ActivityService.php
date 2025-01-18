@@ -135,6 +135,11 @@ class ActivityService
 
     public function inserisciAttivitaClient($request)
     {
+        if ($request->clients == []){
+            return ['seleziona clienti! - inserimento non effettuato', 'error'];
+        } elseif (!$request->giorno){
+            return ['seleziona giorno! - inserimento non effettuato', 'error'];
+        }
         try {
             $attivita = Activity::findOrFail($request->activity_id);
             foreach ($request->clients as $idClient){
@@ -155,8 +160,6 @@ class ActivityService
             if ($e->getCode() == 23000) { // Violazione dei vincoli (es. unique)
                 if (!$request->activity_id){
                     return ['Attività non selezionata - inserimento non effettuato', 'error'];
-                }elseif (!$request->clients){
-                    return ['seleziona clienti - inserimento non effettuato', 'error'];
                 }
                 return ['associazione già presente - inserimento non effettuato', 'error'];
             }

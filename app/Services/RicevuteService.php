@@ -20,6 +20,16 @@ class RicevuteService
 
     public function inserisciRicevuta($request)
     {
+        if (!$request->dataRicevuta){
+            return ['data ricevuta obbligatoria! - inserimento non effettuato', 'error', ''];
+        }elseif (!$request->nominativo){
+            return ['nominativo obbligatorio! - inserimento non effettuato', 'error', ''];
+        }elseif (!$request->importo){
+            return ['importo obbligatorio! - inserimento non effettuato', 'error', ''];
+        }elseif (!$request->modalitaPagamento){
+            return ['modalità di pagamento obbligatoria! - inserimento non effettuato', 'error', ''];
+        }
+
         $anno = Carbon::make($request->dataRicevuta)->year;
 
         if ($request->progressivo){

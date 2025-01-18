@@ -1,33 +1,8 @@
-<div class="min-h-screen">
-
-    <div class="grid gap-6 mb-6 md:grid-cols-6 pt-4">
-        <div>
-            <label for="giorno" class="text-white p-2 lg:hidden">Seleziona giorno:</label>
-            <input wire:model="giorno"
-                   type="date"
-                   id="giorno"
-                   class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"  />
-        </div>
-        <div>
-            <input wire:model="ore"
-                   type="number"
-                   class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                   placeholder="ore" />
-        </div>
-        <div>
-            <button wire:click="inserisci" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                Inserisci
-            </button>
-        </div>
-    </div>
-
+<div >
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-400 mb-4">
                 <thead class="text-xs uppercase bg-gray-700 text-white">
                 <tr>
-                    <th scope="col" class="px-6 py-3">
-                        id
-                    </th>
                     <th scope="col" class="px-6 py-3">
                         giorno
                     </th>
@@ -37,14 +12,14 @@
                     <th scope="col" class="px-6 py-3 text-center">
                         Azioni
                     </th>
+                    <th scope="col" class="px-6 py-3">
+                        id
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($listaPresenzePaginate as $item)
                     <tr class="bg-gray-800 hover:bg-gray-600">
-                        <td class="px-6 py-4 whitespace-nowrap text-white">
-                           # {{$item->id}}
-                        </td>
                         <td class="px-6 py-4 whitespace-nowrap text-white">
                             {{$item->giornoformattato}}
                         </td>
@@ -62,6 +37,9 @@
                                     </span>
                             </button>
                         </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-white">
+                            # {{$item->id}}
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>
@@ -72,17 +50,8 @@
             {{$listaPresenzePaginate->links(data: ['scrollTo' => false])}}
         </div>
 
+    @script
     <script>
-        window.addEventListener('aggiungi', event => {
-            Swal.fire({
-                title: "Esito",
-                text: event.detail[0].testo,
-                icon: event.detail[0].icon,
-                showConfirmButton: false,
-                timer: 2000
-            });
-        });
-
         window.addEventListener('info', event => {
             Swal.fire({
                 title: "Sei sicuro?",
@@ -108,6 +77,7 @@
             });
         });
     </script>
+    @endscript
 </div>
 
 

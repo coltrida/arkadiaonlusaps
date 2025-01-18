@@ -1,100 +1,10 @@
-<div class="min-h-screen">
-
-    <div class="grid gap-6 mb-6 md:grid-cols-7">
-        <div class="md:col-span-1">
-            <select wire:model="car_id"
-                    class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500">
-                <option selected value="">Vettura</option>
-                @foreach($listaVetture as $car)
-                    <option value="{{$car->id}}">{{$car->name}}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="md:col-span-1">
-            <input wire:model="km_iniziali"
-                   type="number"
-                   class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                   placeholder="km iniziali" />
-        </div>
-        <div class="md:col-span-1">
-            <input wire:model="km_finali"
-                   type="number"
-                   class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                   placeholder="km finali" />
-        </div>
-        <div class="md:col-span-1">
-            <select wire:model="user_id"
-                    class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500">
-                <option selected value="">Operatore</option>
-                @foreach($listaOperatori as $user)
-                    <option value="{{$user->id}}">{{$user->name}}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="md:col-span-1">
-            <div>
-                <label for="giorno" class="text-white p-2 lg:hidden">Seleziona giorno:</label>
-                <input wire:model="giorno"
-                       type="date"
-                       id="giorno"
-                       class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"  />
-            </div>
-        </div>
-
-        <!-- Modal toggle -->
-        <button data-modal-target="default-modal" data-modal-toggle="default-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-gray-700 dark:hover:bg-gray-500 dark:focus:ring-blue-800" type="button">
-            Lista Clienti
-        </button>
-
-        <!-- Main modal -->
-        <div id="default-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-            <div class="relative p-4 w-full max-w-2xl max-h-full">
-                <!-- Modal content -->
-                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                    <!-- Modal header -->
-                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                            Lista Clienti
-                        </h3>
-                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal">
-                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                            </svg>
-                            <span class="sr-only">Close modal</span>
-                        </button>
-                    </div>
-                    <!-- Modal body -->
-                    <div class="p-4 md:p-5 space-y-4 overflow-y-auto" style="height: 200px">
-                        <div class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                            @foreach($listaRagazzi as $client)
-                                <div class="flex items-center mb-4">
-                                    <input wire:model="clients" id="default-checkbox-{{$client->id}}" type="checkbox" value="{{$client->id}}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                    <label for="default-checkbox-{{$client->id}}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{$client->name}}</label>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                    <!-- Modal footer -->
-                    <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
-                        <button data-modal-hide="default-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Chiudi</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="text-right">
-            <button wire:click="inserisci" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                Inserisci
-            </button>
-        </div>
-    </div>
-
+<div>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-400 mb-4">
             <thead class="text-xs uppercase bg-gray-700 text-white">
             <tr>
                 <th scope="col" class="px-6 py-3">
-                    id
+                    Giorno
                 </th>
                 <th scope="col" class="px-6 py-3">
                     Vettura
@@ -106,13 +16,13 @@
                     Operatore
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Giorno
-                </th>
-                <th scope="col" class="px-6 py-3">
                     Pass.
                 </th>
                 <th scope="col" class="px-2 py-3 text-center">
                     Azioni
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    id
                 </th>
             </tr>
             </thead>
@@ -120,7 +30,7 @@
             @foreach($listaTuttiViaggiPaginate as $item)
                 <tr class="bg-gray-800 hover:bg-gray-600">
                     <td class="px-6 py-4 whitespace-nowrap text-white">
-                       # {{$item->id}}
+                        {{$item->giornoformattato}}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-white">
                         {{$item->car->name}}
@@ -130,9 +40,6 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-white">
                         {{$item->user->name}}
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-white">
-                        {{$item->giorno}}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-white">
                         @foreach($item->clients as $client)
@@ -150,6 +57,9 @@
                                     </span>
                         </button>
                     </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-white">
+                        # {{$item->id}}
+                    </td>
                 </tr>
             @endforeach
             </tbody>
@@ -160,17 +70,8 @@
         {{$listaTuttiViaggiPaginate->links(data: ['scrollTo' => false])}}
     </div>
 
+    @script
     <script>
-        window.addEventListener('aggiungi', event => {
-            Swal.fire({
-                title: "Esito",
-                text: event.detail[0].testo,
-                icon: event.detail[0].icon,
-                showConfirmButton: false,
-                timer: 3000
-            });
-        });
-
         window.addEventListener('info', event => {
             Swal.fire({
                 title: "Sei sicuro?",
@@ -196,6 +97,7 @@
             });
         });
     </script>
+    @endscript
 </div>
 
 
