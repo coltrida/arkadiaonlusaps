@@ -13,9 +13,9 @@ class StatisticheService
     {
         return Client::with([
             'activitiesMensili' => function($m) use ($request) {
-            $m->where('mese', $request->meseSelezionato);
+            $m->where('mese', $request->meseSelezionato)->where('anno', $request->annoSelezionato);
         }, 'activitiesOrario' => function($o) use ($request){
-            $o->where('mese', $request->meseSelezionato);
+            $o->where('mese', $request->meseSelezionato)->where('anno', $request->annoSelezionato);
         }])->find($request->client_id);
     }
 

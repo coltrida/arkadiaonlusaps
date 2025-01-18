@@ -21,13 +21,15 @@ class Client extends Model
     public function activitiesMensili()
     {
         return $this->belongsToMany(Activity::class, 'activities_clients')
-            ->where('tipo', 'mensile')->withPivot('quantita', 'costo', 'mese', 'anno', 'giorno', 'id');
+            ->where('tipo', 'mensile')
+            ->withPivot('quantita', 'costo', 'mese', 'anno', 'giorno', 'id');
     }
 
     public function activitiesOrario()
     {
         return $this->belongsToMany(Activity::class, 'activities_clients')
-            ->where('tipo', 'orario')->withPivot('quantita', 'costo', 'mese', 'anno', 'giorno', 'id');
+            ->where('tipo', 'orario')
+            ->withPivot('quantita', 'costo', 'mese', 'anno', 'giorno', 'id');
     }
 
     public function trips()

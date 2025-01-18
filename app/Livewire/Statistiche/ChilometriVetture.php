@@ -4,46 +4,41 @@ namespace App\Livewire\Statistiche;
 
 use App\Services\CarService;
 use App\Services\StatisticheService;
+use App\Services\TripService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class ChilometriVetture extends Component
-{  public $car_id;
-    public $annoOggi;
-    public $annoInizio = 2020;
-    public $annoSelezionato;
+{
+
     public $visualizzaStatistiche;
-    public $mesi = [];
     public $trips;
 
-    public function mount()
-    {
-        $this->annoOggi = $this->annoSelezionato = Carbon::now()->year;
-    }
 
-    public function visualizza(StatisticheService $statisticheService)
+    #[On('visualizzaStatisticheChilometriVetture')]
+    public function visualizza(StatisticheService $statisticheService, $requestData)
     {
         $this->visualizzaStatistiche = true;
+        $request = Request::createFrom(new Request($requestData));
 
-        $request = new Request();
-        $request->car_id = $this->car_id;
-        $request->anno = $this->annoSelezionato;
-        $request->mesi = $this->mesi;
         $this->trips = $statisticheService->chilometriVetture($request);
+
+        // Notifica il completamento al componente di origine
+        $this->dispatch('datiCaricati');
     }
 
-    public function elimina($id)
+    public function elimina(TripService $tripService, $id)
     {
-
+        $tripService->elimina($id);
+        $this->trips = $this->trips->filter(function ($trip) use ($id) {
+            return $trip->id != $id;
+        });
     }
 
-
-
-    public function render(CarService $carService)
+    public function render()
     {
-        return view('livewire.statistiche.chilometri-vetture', [
-            'listaVetture' => $carService->listaVetture()
-        ]);
+        return view('livewire.statistiche.chilometri-vetture');
     }
 }

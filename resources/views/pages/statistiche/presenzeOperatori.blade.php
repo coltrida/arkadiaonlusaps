@@ -1,8 +1,9 @@
 <x-layouts.stile>
     <x-slot:title>{{$title}}</x-slot:title>
 
-    <div>
-        <livewire:statistiche.presenze-operatori />
+    <div class="min-h-screen">
+        <livewire:statistiche.form-presenze-operatori />
+        <livewire:statistiche.presenze-operatori lazy/>
     </div>
 
 </x-layouts.stile>

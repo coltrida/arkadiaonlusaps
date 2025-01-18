@@ -10,6 +10,12 @@ Route::get('/migrate', function (){
 //    \Illuminate\Support\Facades\Artisan::call('migrate --path=/database/migrations/2022_04_27_193446_add_giorno_to_primanota.php');
 });
 
+Route::get('/eseguiCache', function (){
+    \Illuminate\Support\Facades\Artisan::call('config:cache');
+    \Illuminate\Support\Facades\Artisan::call('route:cache');
+    \Illuminate\Support\Facades\Artisan::call('view:cache');
+});
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [\App\Http\Controllers\FrontController::class, 'index'])->name('inizio');
 
