@@ -3,7 +3,7 @@
         <div>
             <select wire:model="client_id"
                     class="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500">
-                <option selected value="">Ragazzi</option>
+                <option selected value="">Clienti</option>
                 @foreach($listaRagazzi as $item)
                     <option value="{{$item->id}}">{{$item->name}}</option>
                 @endforeach

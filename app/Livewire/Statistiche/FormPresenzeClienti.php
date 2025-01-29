@@ -29,7 +29,7 @@ class FormPresenzeClienti extends Component
     }
 
     #[On('datiCaricati')]
-    public function datiCaricati()
+    public function datiCaricati($saldoOriginale)
     {
         $this->isLoading = false; // Nascondi lo spinner
     }

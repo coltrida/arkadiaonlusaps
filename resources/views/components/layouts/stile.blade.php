@@ -26,6 +26,7 @@
             background: red !important;
         }
     </style>
+
     @livewireStyles
 </head>
 <body class="font-sans antialiased bg-black text-white/50">

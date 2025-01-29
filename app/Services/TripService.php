@@ -20,6 +20,7 @@ class TripService
         }
 
         try {
+            //dd(Carbon::make($request->giorno)->month);
             $trip = Trip::create([
                 'kmPercorsi' => $request->kmPercorsi,
                 'user_id' => $request->user_id,

@@ -25,5 +25,8 @@ class DatabaseSeeder extends Seeder
         $this->call(ClientSeeder::class);
         $this->call(ActivitySeeder::class);
         $this->call(AgricolturaSeeder::class);
+        $this->call(AppuntamentiSeeder::class);
+        $this->call(ActivityClientSeeder::class);
+        $this->call(AssociaSeeder::class);
     }
 }

@@ -32,6 +32,11 @@ class Client extends Model
             ->withPivot('quantita', 'costo', 'mese', 'anno', 'giorno', 'id');
     }
 
+    public function asociazionimensili()
+    {
+        return $this->hasMany(Associa::class)->with('activity');
+    }
+
     public function trips()
     {
         return $this->belongsToMany(Trip::class);

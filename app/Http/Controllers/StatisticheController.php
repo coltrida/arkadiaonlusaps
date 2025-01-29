@@ -33,4 +33,22 @@ class StatisticheController extends Controller
             'title' => 'Statistiche Chilometri Clienti'
         ]);
     }
+
+    public function stampaPresenzeClienti(Request $request)
+    {
+        $ragazzoConPresenzeAttivita = json_decode($request->input('ragazzoConPresenzeAttivita'), true);
+      //  dd($ragazzoConPresenzeAttivita);
+        $anno = $request->anno;
+        $mese = $request->mese;
+        $saldoOriginale = $request->saldoOriginale;
+        $nuovoSaldo = $request->nuovoSaldo;
+        $causaleMod = $request->causaleMod;
+        $importoMod = $request->importoMod;
+        $dataMod = $request->dataMod;
+
+        return view('pages.statistiche.stampaPresenzeClienti',
+            compact('ragazzoConPresenzeAttivita', 'anno', 'mese', 'saldoOriginale', 'nuovoSaldo',
+                'causaleMod', 'importoMod', 'dataMod'));
+
+    }
 }

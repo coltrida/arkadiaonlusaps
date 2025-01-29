@@ -11,10 +11,7 @@ class StatisticheService
 {
     public function presenzeRagazzi($request)
     {
-        return Client::with([
-            'activitiesMensili' => function($m) use ($request) {
-            $m->where('mese', $request->meseSelezionato)->where('anno', $request->annoSelezionato);
-        }, 'activitiesOrario' => function($o) use ($request){
+        return Client::with(['asociazionimensili', 'activitiesOrario' => function($o) use ($request){
             $o->where('mese', $request->meseSelezionato)->where('anno', $request->annoSelezionato);
         }])->find($request->client_id);
     }

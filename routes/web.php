@@ -3,11 +3,20 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+/*Route::get('/test', function () {
+    \Illuminate\Support\Facades\Mail::raw('Email di test inviata da Laravel con Aruba SMTP', function ($message) {
+        $message->to('coltrida@gmail.com') // Sostituisci con un'email valida
+        ->subject('Test SMTP Aruba');
+    });
+});*/
+
+
 Route::get('/calcoloSaldo', [\App\Http\Controllers\FrontController::class, 'calcoloSaldo'])->name('calcoloSaldo');
+Route::get('/calendario', [\App\Http\Controllers\CalendarController::class, 'index'])->name('calendar');
 
 Route::get('/migrate', function (){
 //    \Illuminate\Support\Facades\Artisan::call('migrate --path=/database/migrations/2023_09_17_203300_add_descrizione_to_table.php');
-//    \Illuminate\Support\Facades\Artisan::call('migrate --path=/database/migrations/2022_04_27_193446_add_giorno_to_primanota.php');
+    \Illuminate\Support\Facades\Artisan::call('migrate --path=/database/migrations/2025_01_25_171823_create_appuntamentos_table.php');
 });
 
 Route::get('/eseguiCache', function (){
@@ -49,6 +58,7 @@ Route::middleware(['auth'])->group(function () {
 
     //-------------------------- STATISTICHE -------------------------------//
     Route::get('/statistiche/presenzeClienti', [\App\Http\Controllers\StatisticheController::class, 'presenzeClienti'])->name('statistiche.presenzeClienti');
+    Route::post('/statistiche/stampaPresenzeClienti', [\App\Http\Controllers\StatisticheController::class, 'stampaPresenzeClienti'])->name('statistiche.stampaPresenzeClienti');
     Route::get('/statistiche/presenzeOperatori', [\App\Http\Controllers\StatisticheController::class, 'presenzeOperatori'])->name('statistiche.presenzeOperatori');
     Route::get('/statistiche/chilometriVetture', [\App\Http\Controllers\StatisticheController::class, 'chilometriVetture'])->name('statistiche.chilometriVetture');
     Route::get('/statistiche/chilometriClienti', [\App\Http\Controllers\StatisticheController::class, 'chilometriClienti'])->name('statistiche.chilometriClienti');
