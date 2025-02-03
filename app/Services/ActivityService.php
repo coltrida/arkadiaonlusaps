@@ -87,12 +87,13 @@ class ActivityService
 
     public function listaAssociazioniAttivitaClientPaginate($testoRicerca)
     {
+        $testoRicercaMinuscolo = $testoRicerca ? \Illuminate\Support\Str::lower($testoRicerca) : null;
         return Associa::with('client', 'activity')
-            ->whereHas('client', function ($c) use ($testoRicerca){
-                $c->where('name', 'like', '%'.$testoRicerca.'%');
+            ->whereHas('client', function ($c) use ($testoRicercaMinuscolo){
+                $c->whereRaw('LOWER(name) LIKE ?', ['%' . $testoRicercaMinuscolo . '%']);
             })
             ->orderBy('id', 'desc')
-            ->paginate(5);
+            ->paginate(10);
     }
 
     public function inserisciAssociazioneAttivitaClient($request)

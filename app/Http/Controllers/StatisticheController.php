@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class StatisticheController extends Controller
@@ -37,7 +38,6 @@ class StatisticheController extends Controller
     public function stampaPresenzeClienti(Request $request)
     {
         $ragazzoConPresenzeAttivita = json_decode($request->input('ragazzoConPresenzeAttivita'), true);
-      //  dd($ragazzoConPresenzeAttivita);
         $anno = $request->anno;
         $mese = $request->mese;
         $saldoOriginale = $request->saldoOriginale;
@@ -46,9 +46,14 @@ class StatisticheController extends Controller
         $importoMod = $request->importoMod;
         $dataMod = $request->dataMod;
 
-        return view('pages.statistiche.stampaPresenzeClienti',
+        $pdf =Pdf::loadHTML(view('pages.statistiche.stampaPresenzeClienti', compact('ragazzoConPresenzeAttivita',
+            'anno', 'mese', 'saldoOriginale', 'nuovoSaldo',
+            'causaleMod', 'importoMod', 'dataMod')));
+        return $pdf->download($ragazzoConPresenzeAttivita['name']."-".$mese."-".$anno.".pdf");
+
+        /*return view('pages.statistiche.stampaPresenzeClienti',
             compact('ragazzoConPresenzeAttivita', 'anno', 'mese', 'saldoOriginale', 'nuovoSaldo',
-                'causaleMod', 'importoMod', 'dataMod'));
+                'causaleMod', 'importoMod', 'dataMod'));*/
 
     }
 }

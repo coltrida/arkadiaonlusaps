@@ -15,23 +15,23 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="font-sans text-gray-900 antialiased">
-<div class="min-h-screen flex flex-col sm:justify-center items-center pt-2 sm:pt-0">
+<div class="flex flex-col sm:justify-center items-center">
 
-    <div class="w-3/4 mt-1 bg-white dark:bg-gray-100 shadow-md overflow-hidden sm:rounded-lg">
+    <div class="w-3/4 mt-1 bg-white overflow-hidden sm:rounded-lg">
         <div class="container mx-auto">
 
             <div>
-                <h2 class="text-center text-3xl border rounded-lg p-4 bg-blue-100">
+                <h2 class="text-center text-2xl border border-gray-700 p-2">
                     Presenze {{$ragazzoConPresenzeAttivita['name']}} - {{$mese}}/{{$anno}}
                 </h2>
             </div>
 
-            <div class="bg-gray-200 p-6 text-center">
-                <h2 class="text-3xl mb-2" style="margin-top: 70px">Attività Mensili</h2>
+            <div class="p-6 text-center">
+                <h2 class="text-2xl mb-2" style="margin-top: 10px">Attività Mensili</h2>
 
-                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-400 mb-4">
-                        <thead class="text-xs uppercase bg-gray-700 text-white">
+                <div class="relative overflow-x-auto ">
+                    <table class="w-full text-sm text-left rtl:text-right mb-4">
+                        <thead class="text-xs uppercase border border-gray-700 bg-blue-100">
                         <tr class="text-center">
                             <th scope="col" class="px-6 py-3">
                                 Attività
@@ -46,14 +46,14 @@
                         </thead>
                         <tbody>
                         @foreach($ragazzoConPresenzeAttivita['asociazionimensili'] as $item)
-                            <tr class="text-center text-white border-b bg-gray-800 border-gray-700 hover:bg-gray-50 hover:bg-gray-600">
-                                <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap text-white">
+                            <tr class="text-center border border-gray-700">
+                                <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">
                                     {{$item['activity']['name']}}
                                 </th>
-                                <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap text-white">
+                                <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">
                                     {{$item['activity']['tipo']}}
                                 </th>
-                                <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap text-white">
+                                <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">
                                     € {{$item['activity']['cost']}}
                                 </th>
                             </tr>
@@ -62,11 +62,11 @@
                     </table>
                 </div>
 
-                <h2 class="text-3xl mb-2" style="margin-top: 70px">Attività Orarie</h2>
+                <h2 class="text-2xl mb-2" style="margin-top: 30px">Attività Orarie</h2>
 
-                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-400 mb-4">
-                        <thead class="text-xs uppercase bg-gray-700 text-white">
+                <div class="relative overflow-x-aut sm:rounded-lg">
+                    <table class="w-full text-sm text-left rtl:text-right mb-4">
+                        <thead class="text-xs uppercase border border-gray-700 bg-blue-100">
                         <tr class="text-center">
                             <th scope="col" class="px-6 py-3">
                                 id
@@ -87,20 +87,20 @@
                         </thead>
                         <tbody>
                         @foreach($ragazzoConPresenzeAttivita['activities_orario'] as $item)
-                            <tr class="text-center text-white border-b bg-gray-800 border-gray-700 bg-gray-50 hover:bg-gray-600">
-                                <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap text-white">
+                            <tr class="text-center border border-gray-700">
+                                <th scope="row" class="px-6 py-4 font-medium whitespace-nowra">
                                     {{$item['pivot']['id']}}
                                 </th>
-                                <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap text-white">
+                                <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">
                                     {{$item['name']}}
                                 </th>
-                                <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap text-white">
+                                <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">
                                     {{\Carbon\Carbon::make($item['pivot']['giorno'])->format('d-m-Y')}}
                                 </th>
-                                <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap text-white">
+                                <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">
                                     {{$item['tipo']}}
                                 </th>
-                                <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap text-white">
+                                <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">
                                     € {{$item['pivot']['costo']}}
                                 </th>
                             </tr>
@@ -108,20 +108,61 @@
                         </tbody>
                     </table>
                 </div>
-                <h2 class="text-3xl text-center" style="margin-top: 70px">Totale: € {{$saldoOriginale}}</h2>
+                <h2 class="text-xl text-center border border-gray-700 p-2" style="margin-top: 40px;">
+                    Totale: € {{$saldoOriginale}}
+                </h2>
+
                 @if($nuovoSaldo)
-                    <div class="my-8 text-3xl flex justify-between bg-gray-50 p-4 rounded-lg">
+                    <h2 class="text-xl text-center border border-gray-700 p-2" style="margin-top: 40px;">
+                        Modifiche
+                    </h2>
+                    <table class="w-full text-sm text-left rtl:text-right mb-4">
+                        <thead class="text-xs uppercase border border-gray-700 bg-blue-100">
+                        <tr class="text-center">
+                            <th scope="col" class="px-6 py-3">
+                                data
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                importo
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                causale
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @for($i=0; $i<count($importoMod); $i++)
+                            <tr class="text-center border border-gray-700">
+                                <th scope="row" class="px-6 py-4 font-medium whitespace-nowra">
+
+                                    {{\Carbon\Carbon::make($dataMod[$i])->format('d-m-Y')}}
+                                </th>
+                                <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">
+                                   € {{$importoMod[$i]}}
+                                </th>
+                                <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">
+                                    {{$causaleMod[$i]}}
+                                </th>
+                            </tr>
+                        @endfor
+                        </tbody>
+                    </table>
+
+{{--                    @for($i=0; $i<count($importoMod); $i++)
+                    <div class="my-8 text-2xl flex justify-between bg-gray-50 p-4 border border-gray-700">
                         <div>
-                            data {{$dataMod}}
+                            data {{$dataMod[$i]}}
                         </div>
                         <div>
-                            Importo € {{$importoMod}}
+                            Importo € {{$importoMod[$i]}}
                         </div>
                         <div>
-                            Causale {{$causaleMod}}
+                            Causale {{$causaleMod[$i]}}
                         </div>
                     </div>
-                    <div class="my-8 text-3xl">
+                    @endfor--}}
+
+                    <div class="my-8 text-xl border border-gray-700 p-2">
                         Nuovo Saldo: € {{$nuovoSaldo}}
                     </div>
                 @endif

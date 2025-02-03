@@ -25,7 +25,7 @@
                     </thead>
                     <tbody>
                     @foreach($ragazzoConPresenzeAttivita->asociazionimensili as $item)
-                        <tr class="text-center text-white border-b bg-gray-800 border-gray-700 hover:bg-gray-50 hover:bg-gray-600">
+                        <tr class="text-center text-white border-b bg-gray-800 border-gray-700 hover:bg-gray-600">
                             <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap text-white">
                                 {{$item->activity->name}}
                             </th>
@@ -81,7 +81,7 @@
                     </thead>
                     <tbody>
                     @foreach($ragazzoConPresenzeAttivita->activitiesOrario as $item)
-                        <tr class="text-center text-white border-b bg-gray-800 border-gray-700 bg-gray-50 hover:bg-gray-600">
+                        <tr class="text-center text-white border-b bg-gray-800 border-gray-700 hover:bg-gray-600">
                             <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap text-white">
                                 {{$item->pivot->id}}
                             </th>
