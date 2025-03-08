@@ -18,6 +18,16 @@ class RicevuteService
             ->orderBy('anno', 'desc')->orderBy('progressivo', 'desc')->paginate(5);
     }
 
+    public function listaRicevuteFromTo($daProgressivo, $aProgressivo, $anno)
+    {
+        return Ricevuta::where([
+            ['anno', $anno],
+            ['progressivo', '>=', $daProgressivo],
+            ['progressivo', '<=', $aProgressivo],
+        ])
+            ->orderBy('progressivo')->get();
+    }
+
     public function inserisciRicevuta($request)
     {
         if (!$request->dataRicevuta){
@@ -66,5 +76,11 @@ class RicevuteService
     public function eliminaRicevuta($id)
     {
         Ricevuta::find($id)->delete();
+    }
+
+    public function anniRicevute()
+    {
+        return Ricevuta::select('anno')->distinct()->orderBy('anno', 'desc')->pluck('anno');
+
     }
 }

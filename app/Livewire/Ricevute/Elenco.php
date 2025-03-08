@@ -20,6 +20,20 @@ class Elenco extends Component
     use WithPagination, WithoutUrlPagination;
 
     public $testo;
+    public $daProgressivo;
+    public $aProgressivo;
+    public $anno;
+    public $anniRicevute = [];
+
+    public function mount(RicevuteService $ricevuteService)
+    {
+        // Recupera gli anni dal database
+        $this->anniRicevute = Ricevuta::select('anno')->distinct()->orderBy('anno', 'desc')->pluck('anno')->toArray();
+
+        // Imposta il primo valore di default se ci sono anni disponibili
+        $this->anno = $this->anniRicevute[0] ?? null;
+    }
+
 
     public function stampa(Ricevuta $ricevuta)
     {
@@ -50,6 +64,17 @@ class Elenco extends Component
             <span class="sr-only">Loading...</span>
         </div>
         HTML;
+    }
+
+    public function stampaListaRicevute(RicevuteService $ricevuteService)
+    {
+        //dd($this->daProgressivo.' - '.$this->aProgressivo.' - '.$this->anno);
+        $listaRicevute = $ricevuteService->listaRicevuteFromTo($this->daProgressivo, $this->aProgressivo, $this->anno);
+        $pdf = Pdf::loadView('livewire.pdf.listaRicevute', compact('listaRicevute'));
+        $fileName = "listaRicevute.pdf";
+        return response()->streamDownload(function () use($pdf) {
+            echo  $pdf->stream();
+        }, $fileName);
     }
 
     #[On('aggiungiRicevuta')]

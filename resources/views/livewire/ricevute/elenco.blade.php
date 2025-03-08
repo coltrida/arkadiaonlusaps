@@ -10,7 +10,39 @@
             <thead class="text-xs uppercase bg-gray-700 text-white">
             <tr>
                 <th scope="col" class="lg:px-6 px-2 py-3">
+                    <button class="bg-green-500 text-white px-4 py-2 rounded" x-on:click="$dispatch('open-modal', 'myModal')">
+                        Stampa
+                    </button>
+                    <x-modal name="myModal">
+                        <div class="p-6">
+                            <h2 class="text-lg font-semibold">Seleziona Progressivo</h2>
+                            <div class="grid gap-6 my-6 md:grid-cols-3">
+                                <div>
+                                    <label for="daProgressivo" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Da prog. nr.</label>
+                                    <input wire:model="daProgressivo" type="number" id="daProgressivo" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                </div>
+                                <div>
+                                    <label for="aProgressivo" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">A prog. nr.</label>
+                                    <input wire:model="aProgressivo" type="number" id="aProgressivo" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                </div>
+                                <div>
+                                    <label for="anni" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Anno</label>
+                                    <select wire:model="anno" id="anni" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        @foreach($anniRicevute as $anno)
+                                            <option>{{$anno}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
 
+                            <button class="mt-4 bg-blue-500 text-white px-4 py-2 rounded" wire:click="stampaListaRicevute()">
+                                stampa
+                            </button>
+                            <button class="mt-4 bg-yellow-600 text-white px-4 py-2 rounded" x-on:click="$dispatch('close-modal', 'myModal')">
+                                Chiudi
+                            </button>
+                        </div>
+                    </x-modal>
                 </th>
                 <th scope="col" class="lg:px-6 px-2 py-3">
                     Prog.

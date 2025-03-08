@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Route;
     });
 });*/
 
+Route::get('/create-sheet', [\App\Http\Controllers\GoogleDriveController::class, 'createSheet']);
+Route::get('/write-sheet', [\App\Http\Controllers\GoogleDriveController::class, 'writeToSheet'])->name('scriviSheet');
 
 Route::get('/calcoloSaldo', [\App\Http\Controllers\FrontController::class, 'calcoloSaldo'])->name('calcoloSaldo');
 Route::get('/calendario', [\App\Http\Controllers\CalendarController::class, 'index'])->name('calendar');

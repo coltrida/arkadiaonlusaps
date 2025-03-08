@@ -5,6 +5,7 @@ namespace App\Livewire\Statistiche;
 use App\Services\CarService;
 use App\Services\StatisticheService;
 use App\Services\TripService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Livewire\Attributes\On;
@@ -35,6 +36,15 @@ class ChilometriVetture extends Component
         $this->trips = $this->trips->filter(function ($trip) use ($id) {
             return $trip->id != $id;
         });
+    }
+
+    public function stampaLista()
+    {
+        $pdf = Pdf::loadView('livewire.pdf.listaChilometri', ['trips' => $this->trips]);
+        $fileName = "listaChilometri.pdf";
+        return response()->streamDownload(function () use($pdf) {
+            echo  $pdf->stream();
+        }, $fileName);
     }
 
     public function render()
