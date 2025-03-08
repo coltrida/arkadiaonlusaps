@@ -31,7 +31,7 @@ class GoogleDriveService
 
     public function createSheet($title = 'New Google Sheet')
     {
-        $folderId = '1qEOLPHK6M-MMx0JEbGcZk5sgD2cBt0-y'; // Sostituisci con l'ID della cartella nel tuo Drive
+        $folderId = '1BCepa06zaNnWraFwWOGppstO7Mn95BPt'; // Sostituisci con l'ID della cartella nel tuo Drive
 
         $fileMetadata = new DriveFile([
             'name' => $title,
@@ -106,7 +106,7 @@ class GoogleDriveService
 
     public function writeToSheet($request)
     {
-        $spreadsheetId = '1Kl489MrligUBKteaEDDtscSQqaMfFNs_g1VfFeZ7XGQ';
+        $spreadsheetId = '1FMA7IH9v9fAO9fIyOo7Ckquy48va0QLyT85Nq3lBneE';
         $range = $request->range; // Cambia il range in base alle esigenze
         $values = [
             $request->values,

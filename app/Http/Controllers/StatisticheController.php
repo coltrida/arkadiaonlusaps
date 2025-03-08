@@ -48,7 +48,7 @@ class StatisticheController extends Controller
         $importoMod = $request->importoMod;
         $dataMod = $request->dataMod;
 
-        $spreadsheetId = '1Kl489MrligUBKteaEDDtscSQqaMfFNs_g1VfFeZ7XGQ';
+        $spreadsheetId = '1FMA7IH9v9fAO9fIyOo7Ckquy48va0QLyT85Nq3lBneE';
         //dd($spreadsheetId);
         $idRagazzo = $ragazzoConPresenzeAttivita['id'];
         $nomeRagazzo = $ragazzoConPresenzeAttivita['name'];
@@ -96,6 +96,7 @@ class StatisticheController extends Controller
         if ($posizioneTotale !== false) {
             // la riga totale c'è
             $posizioneRigaFinale = $posizioneTotale + 2;
+            array_pop($tabellaGoogleSheetAggiornata); // Rimuove l'ultimo elemento
         } else {
             // la riga totale non c'è
             $posizioneRigaFinale = count($tabellaGoogleSheetAggiornata) + 2;
