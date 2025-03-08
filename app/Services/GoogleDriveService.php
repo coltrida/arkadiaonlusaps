@@ -106,8 +106,7 @@ class GoogleDriveService
 
     public function writeToSheet($request)
     {
-        //dd($request);
-        $spreadsheetId = env('SHEET_ID');
+        $spreadsheetId = '1Kl489MrligUBKteaEDDtscSQqaMfFNs_g1VfFeZ7XGQ';
         $range = $request->range; // Cambia il range in base alle esigenze
         $values = [
             $request->values,
@@ -173,7 +172,7 @@ class GoogleDriveService
                 return ['message' => 'Nessun dato trovato nel foglio.'];
             }
 
-            // Converti i dati in un array associativo (id => nome)
+            // Converti i dati in un array (togliendo la prima riga)
             $data = [];
             foreach (array_slice($values, 1) as $row) {
                     $data[] = [

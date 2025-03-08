@@ -39,7 +39,7 @@ class StatisticheController extends Controller
     public function stampaPresenzeClienti(GoogleDriveService $googleDriveService, Request $request)
     {
         $ragazzoConPresenzeAttivita = json_decode($request->input('ragazzoConPresenzeAttivita'), true);
-//dd($ragazzoConPresenzeAttivita);
+
         $anno = $request->anno;
         $mese = $request->mese;
         $saldoOriginale = $request->saldoOriginale;
@@ -48,8 +48,8 @@ class StatisticheController extends Controller
         $importoMod = $request->importoMod;
         $dataMod = $request->dataMod;
 
-        //$googleDriveService->writeToSheet();
-        $spreadsheetId = env('SHEET_ID');
+        $spreadsheetId = '1Kl489MrligUBKteaEDDtscSQqaMfFNs_g1VfFeZ7XGQ';
+        //dd($spreadsheetId);
         $idRagazzo = $ragazzoConPresenzeAttivita['id'];
         $nomeRagazzo = $ragazzoConPresenzeAttivita['name'];
 
@@ -70,8 +70,11 @@ class StatisticheController extends Controller
             $values = $tabellaGoogleSheet[$chiave];
         } else {
             /*echo "L'ID $idCercato non è presente nell'array. quindi lo metto in fondo alla tabella";*/
-            $posizioneRiga = count($tabellaGoogleSheet) + 2;
-
+            if (count($tabellaGoogleSheet) == 0){
+                $posizioneRiga = count($tabellaGoogleSheet) + 2;
+            } else {
+                $posizioneRiga = array_search(0, array_column($tabellaGoogleSheet, 0)) + 2;
+            }
         }
         $posizioneMese = $mese + 1;
         $values[$posizioneMese] = $nuovoSaldo ?? $saldoOriginale;
@@ -80,10 +83,42 @@ class StatisticheController extends Controller
             'range' => 'Sheet1!A'.$posizioneRiga.':N'.$posizioneRiga,
             'values' => $values
         ]);
-
+//dd($request);
         // scrivi sulla tabella
         $googleDriveService->writeToSheet($request);
 
+        // scrivi il totale dei mesi
+        // leggo di nuovo i dati dalla tabella di google
+        $tabellaGoogleSheetAggiornata = $googleDriveService->readSheet($spreadsheetId);
+
+        // vedo se c'è la riga totale
+        $posizioneTotale = array_search(0, array_column($tabellaGoogleSheetAggiornata, 0));
+        if ($posizioneTotale !== false) {
+            // la riga totale c'è
+            $posizioneRigaFinale = $posizioneTotale + 2;
+        } else {
+            // la riga totale non c'è
+            $posizioneRigaFinale = count($tabellaGoogleSheetAggiornata) + 2;
+        }
+
+        $totali = [0, 'TOTALE', 0,0,0,0,0,0,0,0,0,0,0,0];
+
+     //   $sums = array_fill(2, 12, 0); // Inizializza un array con 0 per gli indici da 2 a 13
+
+        foreach ($tabellaGoogleSheetAggiornata as $row) {
+            for ($i = 2; $i <= 13; $i++) {
+                $totali[$i] += (int) $row[$i]; // Converte in intero e somma
+            }
+        }
+
+       // dd($totali);
+
+        $request->merge([
+            'range' => 'Sheet1!A'.$posizioneRigaFinale.':N'.$posizioneRigaFinale,
+            'values' => $totali
+        ]);
+//dd($request);
+        $googleDriveService->writeToSheet($request);
 
         $pdf =Pdf::loadHTML(view('pages.statistiche.stampaPresenzeClienti', compact('ragazzoConPresenzeAttivita',
             'anno', 'mese', 'saldoOriginale', 'nuovoSaldo',

@@ -22,6 +22,8 @@ Route::get('/migrate', function (){
 });
 
 Route::get('/eseguiCache', function (){
+    \Illuminate\Support\Facades\Artisan::call('config:clear');
+    \Illuminate\Support\Facades\Artisan::call('cache:clear');
     \Illuminate\Support\Facades\Artisan::call('config:cache');
     \Illuminate\Support\Facades\Artisan::call('route:cache');
     \Illuminate\Support\Facades\Artisan::call('view:cache');
